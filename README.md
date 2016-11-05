@@ -1,17 +1,23 @@
 #AWS Solr Cloud Cluster
-=========
+------------
 
-This is a guide and Ansible playbook on how to setup Solr Cloud on AWS in a clustered mode.
+This is an Ansible playbook and also guide on how to setup Solr Cloud on AWS in a clustered mode.
 
 Requirements
 ------------
-
+* Ansible v2.1
+* Boto
+* AWS IAM Profile with S3 Access
+* AWS AutoScalingGroups
+* AWS Route53 internal DNS
 * External Zookeeper
 
-This playbook assumes you have setup the external zookeeper. Which can be found here
+This playbook assumes you have setup your AWS account and deployed the external zookeeper. For a guide on how to deploy Zookeeper please see the following link.
 
+Guide
+--------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+### UPDATES COMING SOON!
 
 Playbook/Role Variables
 --------------
@@ -20,8 +26,6 @@ A description of the settable variables for this role should go here, including 
 
 Dependencies
 ------------
-
-
 
 Example Playbook
 ----------------
