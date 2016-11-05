@@ -1,0 +1,32 @@
+---
+  - hosts: localhost
+    connection: local
+    become: true
+    user: root
+    gather_facts: yes
+    vars:
+      # DNS
+      route_53_internal: true/false
+      route_53_external: true/false
+      int_dns_zone: { domain name }
+      int_dns_record: { host name }
+      int_dns_vpc: { specify vpc }
+      int_dns_type: A
+      int_dns_ttl: 60
+      domain_name: "{{ int_dns_record }}.{{ int_dns_zone }}"
+      # Solr_cloud_nodes
+      zookeeper_dns_name_1: zookeeper-1.local
+      zookeeper_dns_name_2: zookeeper-2.local
+      zookeeper_dns_name_3: zookeeper-3.local
+      # Common
+      install_dev_tools: false
+      update_hostname: true
+      update_time_config: true
+      hostname: "{{ int_dns_record }}.local"
+      timezone: Europe/London
+      restart_server: true # Server has to be restarted after changing the timezone config file
+    roles:
+      - dns
+      - solr
+      - solr_cloud_nodes
+      - common
