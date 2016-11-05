@@ -1,0 +1,15 @@
+---
+
+  - include: 1_download.yml
+
+  - include: 2_configure.yml
+    when: solr_config_update
+
+  - include: 3_upload.yml
+    when: solr_upload
+
+  - include: 4_create.yml
+    when: solr_create
+
+  - include: 6_mount.yml
+    when: solr_link_data_dir

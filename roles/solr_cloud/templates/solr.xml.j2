@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+   This is a deployment specfic "solr.xml" file for running a Solr Cloud Cluster
+
+   More information about options available in this configuration file,
+   and Solr Core administration can be found online:
+   http://wiki.apache.org/solr/CoreAdmin
+-->
+
+<solr>
+
+  <solrcloud>
+
+    <str name="host">${host:}</str>
+    <int name="hostPort">${jetty.port:8983}</int>
+    <str name="hostContext">${hostContext:solr}</str>
+
+    <bool name="genericCoreNodeNames">${genericCoreNodeNames:true}</bool>
+
+    <int name="zkClientTimeout">${zkClientTimeout:1200000}</int>
+    <int name="distribUpdateSoTimeout">${distribUpdateSoTimeout:600000}</int>
+    <int name="distribUpdateConnTimeout">${distribUpdateConnTimeout:60000}</int>
+    <str name="zkCredentialsProvider">${zkCredentialsProvider:org.apache.solr.common.cloud.DefaultZkCredentialsProvider}</str>
+    <str name="zkACLProvider">${zkACLProvider:org.apache.solr.common.cloud.DefaultZkACLProvider}</str>
+    <str name="zkHost">{{ zookeeper_node1 }},{{ zookeeper_node2 }},{{ zookeeper_node3 }}/{{ solr_cloud_chroot }}</str>
+  </solrcloud>
+
+  <shardHandlerFactory name="shardHandlerFactory"
+    class="HttpShardHandlerFactory">
+    <int name="socketTimeout">${socketTimeout:600000}</int>
+    <int name="connTimeout">${connTimeout:60000}</int>
+  </shardHandlerFactory>
+
+</solr>

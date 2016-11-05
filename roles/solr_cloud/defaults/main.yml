@@ -1,0 +1,44 @@
+---
+
+# General settings
+aws_region: eu-west-1
+aws_s3_bucket_name: addyourbuckethere
+solr_version: "6.1.0"
+solr_service_name: solr
+solr_install_dir: /opt
+solr_install_path: /opt/solr
+solr_core_directory: "{{ solr_install_path }}/server/solr"
+solr_data_directory: /data/solr
+solr_home: /var/solr
+solr_port: 8983
+
+# Solr config
+solr_config_file: /etc/default/solr.in.sh
+
+# Zookeeper settings
+solr_cloud_chroot: solr
+
+# S3 settings
+config_set_collection: solr_cloud_schema
+
+# Solr schema settings
+solr_cores:
+  -  solr_cloud_schema_1
+
+solr_collection:
+  - name: solr_cloud_schema
+    config_set_folder: "{{ solr_install_path }}/schemas/{{ config_set_collection }}"
+    config_set_name: solr_cloud_schema
+    collection_name: solr_cloud_schema_1
+    number_shards: 3
+    replication_factor: 1
+    max_shards_per_node: 1
+
+# Zookeeper settings
+zookeeper_client_port: 2181
+zookeeper_dns_name_1: zookeeper-1.local
+zookeeper_dns_name_2: zookeeper-2.local
+zookeeper_dns_name_3: zookeeper-3.local
+zookeeper_node1: "{{ zookeeper_dns_name_1 }}:{{ zookeeper_client_port }}"
+zookeeper_node2: "{{ zookeeper_dns_name_2 }}:{{ zookeeper_client_port }}"
+zookeeper_node3: "{{ zookeeper_dns_name_3 }}:{{ zookeeper_client_port }}"

@@ -1,0 +1,19 @@
+---
+
+- name: Pull down config set (external)
+  s3:
+    bucket: "{{ aws_s3_bucket_name }}"
+    object: "solr/{{ item }}"
+    dest: "{{ solr_install_path }}/schemas/{{ item }}"
+    mode: get
+    region: "{{ aws_region }}"
+  with_items:
+    - "{{ config_set_collection }}"
+  when: config_set_download_external
+
+- name: Pull down config set (internal)
+  command: >
+    aws s3 cp s3://{{ aws_s3_bucket_name }}/solr/{{ item }} {{ solr_install_path }}/schemas/{{ item }} --recursive --region {{ aws_region }}
+  with_items:
+    - "{{ config_set_collection }}"
+  when: config_set_download_internal

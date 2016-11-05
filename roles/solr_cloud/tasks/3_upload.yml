@@ -1,0 +1,35 @@
+---
+
+- name: Make zkcli executable
+  file:
+    path: "{{ solr_install_path }}/server/scripts/cloud-scripts/zkcli.sh"
+    mode: 755
+    state: file
+
+- name: Create chroot in zookeeper
+  command: "{{ solr_install_path }}/server/scripts/cloud-scripts/zkcli.sh -zkhost {{ zookeeper_node1 }} -cmd makepath /{{ solr_cloud_chroot }}"
+  ignore_errors: true
+  when: solr_cloud_chroot is defined
+
+- name: Upload solr.xml to Zookeeper
+  command: "{{ solr_install_path }}/server/scripts/cloud-scripts/zkcli.sh -zkhost {{ zookeeper_node1 }}/{{ solr_cloud_chroot }} -cmd putfile /solr.xml {{ solr_install_path }}/server/solr/solr.xml"
+
+- name: Upload Collection config set to Zookeeper
+  command: "{{ solr_install_path }}/server/scripts/cloud-scripts/zkcli.sh -zkhost {{ zookeeper_node1 }}/{{ solr_cloud_chroot }} -cmd upconfig -confdir {{ item.config_set_folder }} -confname {{ item.config_set_name }}"
+  with_items: "{{ solr_collection }}"
+  when: config_set_collection is defined
+  register: collection_upload
+
+- name: Restart Solr after successful uploads
+  service:
+    name: "{{ solr_service_name }}"
+    state: restarted
+    sleep: 5
+  when: ( collection_upload|success )
+  register: solr_server_restart
+
+- name: Hold playbook for server to come back online
+  wait_for:
+    port: "{{ solr_port }}"
+    state: started
+  when: solr_server_restart|success

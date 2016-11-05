@@ -1,0 +1,8 @@
+---
+
+- name: Update Zookeeper hostnames in Solr xml
+  template:
+    src: solr.xml.j2
+    dest: "{{ solr_install_path }}/server/solr/solr.xml"
+    owner: root
+    mode: 0644

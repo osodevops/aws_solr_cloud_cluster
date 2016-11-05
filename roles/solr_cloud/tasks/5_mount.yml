@@ -1,0 +1,24 @@
+---
+
+  - name: Stop Solr service
+    service:
+      name: "{{ solr_service_name }}"
+      state: stopped
+
+  - name: Check if the mount point is there on the new drive
+    file:
+      path: "{{ solr_data_directory }}"
+      state: directory
+      owner: root
+      mode: 0755
+
+  - name: Create symlink between data dir and Solr dir
+    file:
+      src: "{{ solr_core_directory }}"
+      dest: "{{ solr_data_directory }}"
+      state: link
+
+  - name: Start
+    service:
+      name: "{{ solr_service_name }}"
+      state: started

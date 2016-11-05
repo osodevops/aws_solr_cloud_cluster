@@ -1,0 +1,13 @@
+---
+
+- name: Stop Solr
+  service:
+    name: "{{ solr_service }}"
+    state: stopped
+
+- name: Pause playbook
+  pause:
+    seconds: "{{ pause_time }}"
+
+- name: Add nodes to cluster
+  command: "{{ solr_path }}/solr start -c -p {{ 8983 }} -z {{ zookeeper_node1 }},{{ zookeeper_node2 }},{{ zookeeper_node3 }}/{{ solr_chroot }}"

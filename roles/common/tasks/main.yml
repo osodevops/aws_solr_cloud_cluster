@@ -1,0 +1,10 @@
+---
+
+- include: dev_pkg.yml
+  when: ( install_dev_tools | bool )
+
+- include: hostname.yml
+  when: ( update_hostname | bool )
+
+- include: time.yml
+  when: ( update_time_config | bool )

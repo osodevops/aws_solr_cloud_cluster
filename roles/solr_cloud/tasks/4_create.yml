@@ -1,0 +1,8 @@
+---
+
+- name: Create collection
+  uri:
+    url: http://localhost:{{ solr_port }}/solr/admin/collections?action=CREATE&name={{item.collection_name}}&numShards={{item.number_shards}}&replicationFactor={{item.replication_factor}}&collection.configName={{item.config_set_name}}&maxShardsPerNode={{item.max_shards_per_node}}
+    method: GET
+  with_items: "{{ solr_collection }}"
+  when: config_set_collection is defined
